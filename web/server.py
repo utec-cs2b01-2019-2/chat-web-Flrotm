@@ -210,6 +210,17 @@ def logout():
     session.clear()
     return render_template('login.html')
 
+from flask import Flask, session
+
+app=Flask(__name__)
+
+@app.route('/cuantasletras/<nombre>')
+def cuantas_letras(nombre):
+    return str(len(nombre))
+
+if __name__=='__main__':
+    app.run()
+
 if __name__ == '__main__':
     app.secret_key = ".."
     app.run(debug=True,port=8000, threaded=True, host=('127.0.0.1'))
