@@ -214,6 +214,18 @@ from flask import Flask, session
 
 app=Flask(__name__)
 
+@app.route('/suma/<numero>')
+def suma(numero):
+    if 'suma' not in session:
+        session('suma')=0
+
+    suma=session('suma')
+    suma=suma +int(numero)
+    session('suma')=suma
+    return str(suma)
+
+
+
 @app.route('/cuantasletras/<nombre>')
 def cuantas_letras(nombre):
     return str(len(nombre))
@@ -224,3 +236,4 @@ if __name__=='__main__':
 if __name__ == '__main__':
     app.secret_key = ".."
     app.run(debug=True,port=8000, threaded=True, host=('127.0.0.1'))
+
