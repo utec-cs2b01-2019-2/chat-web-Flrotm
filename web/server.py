@@ -14,9 +14,36 @@ app = Flask(__name__)
 def index():
     return render_template('index.html')
 
+@app.route('/')
+def styles():
+    return render_template('styles.css')
+
 @app.route('/static/<content>')
 def static_content(content):
     return render_template(content)
+
+
+@app.route('/cuantasletras/<nombre>') 
+def cuantas_letras(nombre):
+    return str(len(nombre)) 
+
+
+
+@app.route('/login' , methods =['POST']) 
+def login():
+    
+    username = request.form['user'] 
+    password = request.form['password']
+
+    if username == 'francesco.uccelli' and password == 'fucc':
+        session['username'] = username
+        
+        return render_template('welcome.html')
+    else:
+        return "El usuario " + username + " no esta registrado"
+
+
+
 
 @app.route('/users', methods = ['POST'])
 def create_user():
@@ -71,13 +98,6 @@ def delete_user():
     session.commit()
     return "Deleted User"
 
-@app.route('/create_test_users', methods = ['GET'])
-def create_test_users():
-    db_session = db.getSession(engine)
-    user = entities.User(name="David", fullname="Lazo", password="1234", username="qwerty")
-    db_session.add(user)
-    db_session.commit()
-    return "Test user created!"
 
 @app.route('/messages', methods = ['POST'])
 def create_message():
@@ -178,13 +198,13 @@ def send_message():
 
 @app.route('/authenticate', methods = ['POST'])
 def authenticate():
-    #Get data form request
+
     time.sleep(3)
     message = json.loads(request.data)
     username = message['username']
     password = message['password']
 
-    # Look in database
+
     db_session = db.getSession(engine)
 
     try:
@@ -209,29 +229,6 @@ def current_user():
 def logout():
     session.clear()
     return render_template('login.html')
-
-from flask import Flask, session
-
-app=Flask(__name__)
-
-@app.route('/suma/<numero>')
-def suma(numero):
-    if 'suma' not in session:
-        session('suma')=0
-
-    suma=session('suma')
-    suma=suma +int(numero)
-    session('suma')=suma
-    return str(suma)
-
-
-
-@app.route('/cuantasletras/<nombre>')
-def cuantas_letras(nombre):
-    return str(len(nombre))
-
-if __name__=='__main__':
-    app.run()
 
 if __name__ == '__main__':
     app.secret_key = ".."
