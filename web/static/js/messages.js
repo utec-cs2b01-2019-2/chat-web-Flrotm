@@ -1,5 +1,5 @@
 $(function(){
-    var url = "http://127.0.0.1:8000/messages";
+    var url = "/messages";
     var url_users = "http://127.0.0.1:8000/users";
     $("#grid").dxDataGrid({
         dataSource: DevExpress.data.AspNet.createStore({
